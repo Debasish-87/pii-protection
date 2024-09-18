@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+    <script src="{% static 'js/script.js' %}" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .application video {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .transfer-active {
+            backdrop-filter: blur(20px);
+            background: transparent;
+        }
+
+        /* Modal styling */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .modal-content {
+            text-align: center;
+        }
+
+        .display-none {
+            display: none;
+        }
+
+        .photo-preview {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .close {
+            cursor: pointer;
+            font-size: 18px;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
+
+    <title>TRANSFER</title>
+</head>
+
+<body>
+    <div id="overlay" class="overlay-show">
+        <div class="application" >
+            <video autoplay loop muted src="{% static 'img/space3.mp4' %}"></video>
+            <div class="modal display-none" id="my-div">
+                <div class="modal-content">
+                    <span class="close">X</span>
+                    <img class="photo-preview" src="" alt="Preview Image">
+                </div>
+            </div>
+            <header class="main-header">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="{% static 'img/cir.svg' %}" alt="">
+                    </a>
+                </div>
+                <nav class="desktop-main-menu">
+                    <div class="btn-section menu-bar">
+                        <a class="log-in" href="{% url 'login' %}">Log in</a>
+                        <a class="s1 s2 s3" href="{% url 'signup' %}">Sign up</a>
+                    </div>
+                </nav>
+            </header>
+            <div>
+                <form id="main-form" action="{% url 'process_image' %}" class="transfer transfer-active" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="file">
+                            <label class="button-89" for="file">Upload Photo</label>
+                            <input type="file" name="image" id="file" accept=".png,.jpg,.jpeg" class="input-file" required>
+                        </div>
+                        <div class="file-preview">
+                            <button class="button-59 preview inactive">Preview</button>
+                            <p>File: <span class="file-name"></span></p>
+                        </div>
+                    </div>
+
+                    <div class="transfer-second-div">
+                        <div class="manage">
+                            <p>Manager ID</p>
+                            <br>
+                            <input class="btn-text" type="text" name="manager_id" id="manager_id" placeholder="Text Here" required>
+                        </div>
+
+                        <div class="text-ok">
+                            <p id="result-message"></p>
+                        </div>
+
+                        <div class="glowing-btn">
+                            <div class="inner-glowing">
+                                <button class="button-23" id="check-button" type="button">Check</button>
+                            </div>
+                            <div class="inner-glowing-">
+                                <!-- Only one form is needed now -->
+                                <button class="button-23" id="send-button" type="submit">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Preview button functionality
+            $('.preview').on('click', function(e) {
+                e.preventDefault();
+
+                var file = $('#file')[0].files[0];
+                if (file) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        $('.photo-preview').attr('src', e.target.result);
+                        $('#my-div').removeClass('display-none'); // Show the modal
+                    }
+
+                    reader.readAsDataURL(file); // Read the uploaded file as a data URL
+                } else {
+                    alert('Please select an image first');
+                }
+            });
+
+            // Close the modal on clicking X
+            $('.close').on('click', function() {
+                $('#my-div').addClass('display-none');
+            });
+
+            // Form submission with check-button
+            $('#check-button').on('click', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData();
+                formData.append('image', $('#file')[0].files[0]);
+                formData.append('manager_id', $('#manager_id').val());
+                formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+                $.ajax({
+                    url: "{% url 'check_image' %}",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        $('#result-message').html(response.message);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                        $('#result-message').html('An error occurred. Please try again.');
+                    }
+                });
+            });
+
+            // Form submission with send-button
+            $('#send-button').on('click', function(e) {
+                e.preventDefault();
+
+                $.ajax({
+                    url: $('#main-form').attr('action'),
+                    type: 'POST',
+                    data: new FormData($('#main-form')[0]),
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        alert('Data saved successfully');
+                        location.reload();  // Refresh the page
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(error);
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

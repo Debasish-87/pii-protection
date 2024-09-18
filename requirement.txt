@@ -1,0 +1,5 @@
+pycryptodome
+opencv-python
+mysql-connector-python
+pytesseract
+django

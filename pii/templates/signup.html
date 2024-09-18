@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Load Django static files -->
+    {% load static %}
+    
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+    <script src="{% static 'js/script.js' %}"></script>
+    <title>Sign up</title>
+</head>
+<body>
+    <div id="root">
+        <div class="whole-sign">
+            <div class="whole-sign2">
+                <div class="whole-inner">
+                    <div class="whole-inner2">
+                        <header class="log">
+                            <div class="loge">
+                                <img src="{% static 'img/cir.svg' %}" alt="My SVG" class="increse">
+                            </div>
+                        </header>
+                    </div>
+                    <h1 class="SignupHere">Sign up to Cyprus</h1>
+                    <div class="Info">
+                        <form method="POST" action="{% url 'signup' %}">
+                            {% csrf_token %}
+                            <div class="whole">
+                                <!-- Your form fields here -->
+                                <div>
+                                    <div class="inner-email">
+                                        <div class="inner-email-2">
+                                            <div class="Email-address">
+                                                <label class="user" for="username">Username</label>
+                                            </div>
+                                            <div class="input-email">
+                                                <input id="username" class="Input-demo" type="text" name="username" placeholder="Enter your username">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="inner-password">
+                                        <div class="inner-password-2">
+                                            <div class="Password-2">
+                                                <label class="secure" for="password">Password</label>
+                                            </div>
+                                            <div class="input-email">
+                                                <input id="password" class="Input-demo" type="password" name="password" placeholder="Enter your Password">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Button-div">
+                                    <button class="Button-next">
+                                        <span class="ButtonInner">Sign up</span>
+                                        <span class="ButtonInner2"></span>
+                                    </button>
+                                </div>
+                                <div class="Below">
+                                    <div class="Or">
+                                        <span class="OrOption">or</span>
+                                    </div>
+                                    <div class="SignupAlready">
+                                        <span class="alter-sign">
+                                            Already have an account?
+                                            <!-- Use {% url 'login' %} to link to login view -->
+                                            <a class="signup-a" href="{% url 'login' %}" id="buttonSecondary">Login here</a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class="foot-last">
+                    <!-- Footer content here -->
+                </div>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

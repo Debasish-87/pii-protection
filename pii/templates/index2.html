@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/style2.css">
+    <title>Photo Preview</title>
+</head>
+
+<body>
+    <div class="modal display-none">
+        <div class="modal-content">
+            <span class="close">X</span>
+            <img class="photo-preview" src="" alt="">
+        </div>
+    </div>
+    <div class="container">
+        <div class="file">
+            <label class="btn" for="file">Upload Photo</label>
+            <input type="file" id="file" accept=".png,.jpg,.jpeg">
+        </div>
+        <div class="file-preview">
+            <button class="btn preview inactive">Preview</button>
+            <p>File: <span class="file-name"></span></p>
+        </div>
+    </div>
+    <script src="/app.js"></script>
+</body>
+</html>

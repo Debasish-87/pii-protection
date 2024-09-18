@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Load static tag to handle static file URLs -->
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %} ">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <script src="{% static 'js/script.js' %}"></script>
+    <style>
+        #_next video{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            
+        }
+    </style>
+    <title>Login</title>
+</head>
+
+<body class="theme">
+    {% if messages %}
+        <div class="message-container">
+                <div class="alert {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+        </div>
+    {% endif %}
+    <div id="_next">
+        <video autoplay loop muted src="{% static 'img/space.mp4' %}"></video>
+        <main>
+            <main class="man"  >
+                <header class="log">
+                    <div class="loge">
+                        <img src="{% static 'img/cir.svg' %}" alt="My SVG" class="increse"> <!-- Ensure image is served via static -->
+                    </div>
+                </header>
+                <section class="section-b">
+                    <div class="whole">
+                        <header class="box-2">
+                            <h1 class=" encore-text title-large">
+                                Log in to Cyprus
+                            </h1>
+                        </header>
+                        <form class="Email" method="POST" action="{% url 'login' %}">
+                            {% csrf_token %}
+                            <div>
+                                <div class="inner-email">
+                                    <div class="inner-email-2">
+                                        <div class="Email-address">
+                                            <label class="encore-text  user" for="username">Username</label>
+                                        </div>
+                                        <div class="input-email">
+                                            <input id="username" class="encore-text-medium Input-demo" type="text"
+                                                name="username" placeholder="Enter your username" style="color:black;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="inner-password">
+                                    <div class="inner-password-2">
+                                        <div class="Password-2">
+                                            <label class="encore-text secure" for="password">Password</label>
+                                        </div>
+                                        <div class="input-email">
+                                            <input id="password" class="Input-demo" type="password" name="password"
+                                                placeholder="Enter your Password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="Button-div">
+                                <button class="button-71" role="button">Log in</button>
+                            </div>
+                            <div class="Below">
+                                <div class="Or">
+                                    <span class="OrOption">or</span>
+                                </div>
+                                <div class="SignupAlready">
+                                    <div class="alter-sign">
+                                        <a class="signup-a" href="{% url 'signup' %}" id="buttonSecondary">Sign up Here</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+                
+            </main>
+        </main>
+    </div>
+</body>
+
+</html>

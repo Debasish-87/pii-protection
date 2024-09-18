@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/manager.css' %}">
+    <link rel="stylesheet" href="{% static 'css/image.css' %}">
+
+
+    <style>
+        body {
+            font-family: 'Familjen Grotesk', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+        }
+        
+        .ID {
+            background: #00000000;
+            margin: 49px 13px 7px 23px;
+            display: inline;
+            height: 25px;
+            padding: 178px 51px;
+            border-color: rgb(43, 43, 43);
+            opacity: 1;
+            border-right-width: 1px;
+            border-left-width: 1px;
+            border-top-width: 10px;
+            border-block-width: 1px;
+            border-style: solid;
+        
+        
+        
+        
+        }
+        
+        
+        .list-2 {
+            height: 382px;
+            width: 37vh;
+            overflow: auto;
+            text-align: center;
+            align-items: center;
+            display: flex;
+            border-color: rgb(43, 43, 43);
+            opacity: 1;
+            border-right-width: 1px;
+            border-left-width: 1px;
+            border-top-width: 10px;
+            border-block-width: 1px;
+            border-style: solid;
+        
+        
+        }
+    </style>
+    
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="good">
+        {% comment %} <span id="closeButton" class="close-2" onclick="redirectToManager()">X</span> {% endcomment %}
+        <div class="ID">            
+            <header class="head-id">ID</header>
+            <div class="list-20">
+                {{ user_id }}
+            
+            </div> <!-- Display the user_id here -->
+        </div>
+        <div class="info_data">
+            <header class="info_data-head">Data
+
+                <div class="line-10" style="top: 15%;"></div>
+            </header>
+            <div class="list-2">{{ decrypt_data }}</div>
+        </div>
+        <div class="document">
+            <img src="{% static 'fetchimg/image_' %}{{ user_id }}.jpg" alt="">
+        </div>
+    </div>
+    
+    {% comment %} <script>
+        function redirectToManager() {
+            window.location.href = "{% url 'manager' %}"; // Redirect to the URL linked to 'manager' view
+        }
+    </script> {% endcomment %}
+    
+</body>
+</html>
+
+
+

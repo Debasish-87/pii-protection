@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Load Django's static template tag -->
+    {% load static %}
+    
+    <!-- Corrected static file references -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+    <link rel="stylesheet" href="{% static 'css/manager.css' %}">
+    <link rel="stylesheet" href="{% static 'css/image.css' %}">
+    <script src="{% static 'js/manage.js' %}" defer></script>
+
+    <style>
+        .first-active {
+            -webkit-backdrop-filter: blur(0);
+            backdrop-filter: blur(0);
+            transform: scale(1);
+            top: 50%;
+            background-color: #82ede8ab;
+            z-index: 30;
+            box-shadow: 0 10px 30px 0 rgba(0, 0, 0, .2);
+            box-shadow: 0 0 12px 0 rgba(0, 0, 0, .1);
+            transition: all .4s;
+        }
+
+    .button-230 {
+        background-color: #82ede8ab;
+        border: 1px solid #222222;
+        border-radius: 8px;
+        box-sizing: border-box;
+        color: #222222;
+        cursor: pointer;
+        display: inline-block;
+        font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 15px;
+        margin: 0;
+        margin-top: 0px;
+        margin-right: 0px;
+        margin-left: 0px;
+        margin-left: 0px;
+        outline: none;
+        padding: 13px 23px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        touch-action: manipulation;
+        transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+        /* -webkit-user-select: none; */
+        width: auto;
+        margin-right: 41px;
+        margin-top: 23px;
+    }
+    
+    .button-230:focus-visible {
+        box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+        transition: box-shadow .2s;
+    }
+    
+    .button-230:active {
+        background-color: #F7F7F7;
+        border-color: #000000;
+        transform: scale(.96);
+    }
+    
+    .button-230:disabled {
+        border-color: #DDDDDD;
+        color: #DDDDDD;
+        cursor: not-allowed;
+        opacity: 1;
+    }
+    
+    .joy {
+        display: inline-flex;
+    }
+    
+    
+    .welcome{
+        margin: 29px 491px 0px 555px;
+        font-size: 19px;
+        color: white;
+        font-family: 'Monospace ';
+    }
+    </style>
+
+    <title>Manage ID</title>
+</head>
+<body>
+    <div class="starting" style="background-image: url({% static 'img/managerback.jpg' %});">
+        <div class="joy" >
+            <div class="welcome" > 
+                <p><b>Hi, </b> <i>Welcome to the Manager's Page.</i></p>
+                <p><i>Your ID: {{manager_id}}</i></p>
+              
+            </div>
+            <button class="button-230" onclick="window.location.href='{% url 'index' %}'">Log out</button>
+        </div>
+        
+        <div class="first-sec first-active">
+            <header class="first-top">
+                <div class="first-name" style="margin-bottom: 21px; margin-top: 20px; font-size: large;">User IDs:</div>
+            </header>
+            <div class="line" style="top: 15%;"></div>
+            <div class="user-ids" style="overflow: auto;">
+                {% if user_ids %}
+                    <ul>
+                        {% for user_id in user_ids %}
+                            <li style="text-align: center; font-size: 25px">
+                                <form method="POST" action="{% url 'process-user-id' user_id=user_id %}">
+                                    <button class="button-56 user-id-btn" data-user-id="{{ user_id }}" type="button">
+                                        {{ user_id }}
+                                    </button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p style="color:black;">No User IDs found for this Manager.</p>
+                {% endif %}
+            </div>           
+        </div>
+
+        <!-- Initially hidden section -->
+        <div class="second-sec second-active display-none">
+            <header class="second-top">
+                <div class="second-doc">Document</div>
+                <div class="second-line"></div>
+                <div class="second-detail">Details</div>
+            </header>
+            <div class="line-1"></div>
+            <div class="second-addhar">
+                <button class="button-52 aadhaar-btn" role="button">Aadhaar Number</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script to toggle visibility and handle user_id -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userButtons = document.querySelectorAll('.user-id-btn');
+            const secondSection = document.querySelector('.second-sec');
+            const aadhaarBtn = document.querySelector('.aadhaar-btn');
+
+            let selectedUserId = null; // Variable to store the selected user_id
+
+            // Show second section and store user_id when a user ID is clicked
+            userButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    selectedUserId = this.getAttribute('data-user-id'); // Store user_id
+                    secondSection.classList.remove('display-none'); // Show second section
+                });
+            });
+
+            // Redirect to image.html when Aadhaar Number button is clicked, using the stored user_id
+            aadhaarBtn.addEventListener('click', function () {
+                if (selectedUserId) {
+                    const url = "{% url 'image_show' %}?user_id=" + selectedUserId;
+
+                    // Window dimensions
+                    const width = 1200;
+                    const height = 600;
+
+                    // Calculate the position to center the window
+                    const left = (screen.width - width) / 2;
+                    const top = (screen.height - height) / 2;
+
+                    // Open the window centered, with fixed size and no resizing allowed
+                    window.open(url, "PopupWindow", `width=${width},height=${height},top=${top},left=${left},scrollbars=yes,resizable=no`);
+                } else {
+                    alert("Please select a User ID first."); // Handle case where no user_id is selected
+                }
+            });
+        });
+
+        function logout() {
+            window.location.href = "index.html";
+        }
+
+    </script>
+</body>
+</html>
+
