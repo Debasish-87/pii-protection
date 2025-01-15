@@ -376,4 +376,7 @@ def tempcheck(image_path):
 if __name__ == "_main_":
     image_path = 'temp.jpg'  # Update with your image path
     manager_id = input("Enter Manager ID: ")
+    print("###############")
     main(image_path, manager_id)
+
+    
